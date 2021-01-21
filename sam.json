@@ -93,7 +93,7 @@
             "https"
           ],
           "paths": {
-          "/getTodo/{id}": {
+            "/getTodo/{id}": {
               "get": {
                 "consumes": [
                   "application/json"
@@ -305,7 +305,7 @@
         "Handler": "app.app",
         "CodeUri": "./deployment.zip",
         "Tags": {
-          "aws-chalice": "version=1.21.9:stage=dev:app=todo-app"
+          "aws-chalice": "version=1.21.9:stage=dev:app=aws-chalice-test"
         },
         "Tracing": "PassThrough",
         "Timeout": 60,
