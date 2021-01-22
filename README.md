@@ -289,3 +289,5 @@ packaged/
 [Introducing custom authorizers in Amazon API Gateway](https://aws.amazon.com/blogs/compute/introducing-custom-authorizers-in-amazon-api-gateway/)
 
 [Authlete Amazon API Gateway + Custom Authorizer + OAuth](https://www.authlete.com/developers/custom_authorizer/)
+
+[Following serverless best practices with AWS Chalice and Lambda Powertools](https://aws.amazon.com/blogs/developer/following-serverless-best-practices-with-aws-chalice-and-lambda-powertools/)
