@@ -7,7 +7,8 @@ In order to get started using AWS Chalice we need to install/configure the follo
 * boto3
 * git
 
-This is a simple workshop step by step and the intention is to reproduce the follow arquitecture by building a very simple and uncomplete ToDo APP.
+This is a simple workshop step by step and the intention is to reproduce the follow arquitecture by building a very simple and uncomplete ToDo APP. We are going to focus in the development of the API Gateway Resoure by using AWS Chalice.
+
 ![alt text](https://github.com/stahlmatias/aws-chalice/blob/main/img/Secure-API-Gateway.png?raw=true)
 
 1. Deploy todo-table
