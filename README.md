@@ -282,6 +282,34 @@ packaged/
 ```
 # Deploy your SAM template
 
+# Implement observability best practices
+
+The first thing we need to do is import the appropriate packages.
+
+```
+from chalice import Chalice
+from chalice.app import ConvertToMiddleware
+
+import requests
+from aws_lambda_powertools import Logger
+from aws_lambda_powertools import Tracer
+
+logger = Logger()
+tracer = Tracer()
+session = requests.Session()
+
+app.register_middleware(ConvertToMiddleware(logger.inject_lambda_context))
+app.register_middleware(ConvertToMiddleware(tracer.capture_lambda_handler))
+
+
+@app.middleware('http')
+def inject_route_info(event, get_response):
+    logger.structure_logs(append=True, request_path=event.path)
+    return get_response(event)
+```
+
+The `inject_route_info` middleware is registered to any Lambda functions associated with our HTTP API, and will automatically be invoked before every view function is called.
+
 
 # Resources
 [AWS Chalice A framework for writing serverless applications](https://aws.github.io/chalice/index.html)
