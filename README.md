@@ -284,7 +284,7 @@ packaged/
 
 # Implement observability best practices
 
-The first thing we need to do is import the appropriate packages.
+The first thing we need to do is import the appropriate packages then instantiate these classes and next register middleware for our application.
 
 ```
 from chalice import Chalice
@@ -309,6 +309,25 @@ def inject_route_info(event, get_response):
 ```
 
 The `inject_route_info` middleware is registered to any Lambda functions associated with our HTTP API, and will automatically be invoked before every view function is called.
+
+Before we can deploy our code, we need to ensure our application is configured appropriately. To do this, update your .chalice/config.json file to enable AWS X-Ray as well as set the service name for your app by creating a POWERTOOLS_SERVICE_NAME environment variable.
+
+```
+{
+  "version": "2.0",
+  "app_name": "todo-app",
+  "xray": true,
+  "environment_variables": {
+    "POWERTOOLS_SERVICE_NAME": "middleware-demo"
+  },
+  "stages": {
+    "dev": {
+      "autogen_policy": false,
+      "api_gateway_stage": "api"
+    }
+  }
+}
+```
 
 
 # Resources
