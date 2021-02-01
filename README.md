@@ -281,7 +281,87 @@ packaged/
 
 ```
 # Deploy your SAM template
+1. cd to the packaged directory
+```
+$ cd packaged/
+$ ls -la
+.
+..
+deployment.zip
+sam.json
+```
 
+2. Create an Amazon S3 bucket in order to deploy the app using CloudFormation
+```
+$ aws s3 mb s3://chalice-teco-cfn-bucket/ --region us-east-1
+```
+
+3. Upload your code to the S3 bucket and create a new SAM template that references your S3 object. 
+```
+$ aws cloudformation package --template-file ./packaged/sam.json \
+--s3-bucket chalice-teco-cfn-bucket --output-template-file sam-packaged.yaml
+```
+4. Deploy your application using the AWS CLI
+```
+$ aws cloudformation deploy --template-file ./sam-packaged.yaml \
+    --stack-name chalice-teco-beta-stack \
+    --capabilities CAPABILITY_IAM
+```
+5. Verification
+```
+$ aws cloudformation describe-stacks --stack-name chalice-teco-beta-stack \
+--query 'Stacks[0].StackStatus'
+"CREATE_COMPLETE"
+```
+
+6. Get the endpoint URL
+```
+$ aws cloudformation describe-stacks --stack-name chalice-teco-beta-stack \
+>     --query 'Stacks[0].Outputs'
+[
+    {
+        "OutputKey": "APIHandlerArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:298890264621:function:chalice-teco-beta-stack-APIHandler-15E55I1QPQFXA"
+    },
+    {
+        "OutputKey": "APIHandlerName",
+        "OutputValue": "chalice-teco-beta-stack-APIHandler-15E55I1QPQFXA"
+    },
+    {
+        "OutputKey": "RestAPIId",
+        "OutputValue": "us3zhe4t7j"
+    },
+    {
+        "OutputKey": "EndpointURL",
+        "OutputValue": "https://us3zhe4t7j.execute-api.us-east-1.amazonaws.com/api/"
+    }
+]
+```
+7. Test the api
+```
+$ curl -X GET 'https://us3zhe4t7j.execute-api.us-east-1.amazonaws.com/api/getAllTodo' \
+-H 'Authorization: Bearer T12FKRqCPCChaQaYRY1qBZA_h1oWXOwTZ-MGLsmAwTk'
+[
+   {
+      "completed": "completed",
+      "task": "new task 1",
+      "username": "authlete_16447040290054",
+      "id": "1"
+   },
+   {
+      "completed": "uncompleted",
+      "task": "task 2",
+      "username": "authlete_16447040290054",
+      "id": "2"
+   },
+   {
+      "completed": "uncompleted",
+      "task": "task 3",
+      "username": "authlete_16447040290054",
+      "id": "3"
+   }
+]
+```
 # Implement observability best practices
 
 The first thing we need to do is import the appropriate packages then instantiate these classes and next register middleware for our application.
