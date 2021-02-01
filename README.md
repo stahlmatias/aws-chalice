@@ -409,6 +409,100 @@ Before we can deploy our code, we need to ensure our application is configured a
 }
 ```
 
+# Working with AWS CodePipeline
+
+## Creating a pipeline
+
+1. Create a release/ directory.
+```
+$ mkdir release/
+```
+2. Generate a CloudFormation template for the starter CD pipeline
+```
+$ chalice generate-pipeline --pipeline-version v2 release/pipeline.json
+```
+3. Deploy this template using the AWS CLI
+```
+$ aws cloudformation deploy --stack-name chalice-teco-pipeline-stack \
+    --template-file release/pipeline.json \
+    --capabilities CAPABILITY_IAM
+```
+4. Initialize the app as a git repository
+```
+$ git init .
+```
+5. Commit your existing files
+```
+$ git add -A .
+$ git commit -m "Initial commit"
+```
+6. Query the CloudFormation stack
+```
+$ aws cloudformation describe-stacks     --stack-name chalice-teco-pipeline-stack     --query 'Stacks[0].Outputs'
+[
+    {
+        "OutputKey": "CodeBuildRoleArn",
+        "OutputValue": "arn:aws:iam::298890264621:role/chalice-teco-pipeline-stack-CodeBuildRole-OCI8ZFIFMUSV"
+    },
+    {
+        "OutputKey": "CFNDeployRoleArn",
+        "OutputValue": "arn:aws:iam::298890264621:role/chalice-teco-pipeline-stack-CFNDeployRole-1HHEPMVZ5YJ5W"
+    },
+    {
+        "OutputKey": "S3ApplicationBucket",
+        "OutputValue": "chalice-teco-pipeline-stack-applicationbucket-v6rxjiacf03i"
+    },
+    {
+        "OutputKey": "CodePipelineRoleArn",
+        "OutputValue": "arn:aws:iam::298890264621:role/chalice-teco-pipeline-stack-CodePipelineRole-1862VZ6FAIEBA"
+    },
+    {
+        "OutputKey": "SourceRepoURL",
+        "OutputValue": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/aws-chalice-test"
+    },
+    {
+        "OutputKey": "S3PipelineBucket",
+        "OutputValue": "chalice-teco-pipeline-stack-artifactbucketstore-1sep3wgf6mwkw"
+    }
+]
+
+```
+7. Copy the value for the SourceRepoURL and configure a new git remote named codecommit
+```
+$ git remote add codecommit https://git-codecommit.us-east-1.amazonaws.com/v1/repos/aws-chalice-test
+```
+
+8. Configure the CodeCommit credential helper. Append these lines to the end of your .git/config file
+```
+[credential]
+    helper =
+    helper = !aws codecommit credential-helper $@
+    UseHttpPath = true
+```
+9. Verify you have a codecommit remote
+
+```
+$ git remote -v
+codecommit	https://git-codecommit.us-east-1.amazonaws.com/v1/repos/aws-chalice-test (fetch)
+codecommit	https://git-codecommit.us-east-1.amazonaws.com/v1/repos/aws-chalice-test (push)
+
+```
+10. Pushing changes to AWS CodeCommit
+```
+$ git add -A .
+$ git commit -m "modifying buildspec"
+$ git push codecommit master
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 517 bytes | 517.00 KiB/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+To https://git-codecommit.us-east-1.amazonaws.com/v1/repos/aws-chalice-test
+   3ecfb85..fb86030  master -> master
+
+```
+## Verification
 
 # Resources
 [AWS Chalice A framework for writing serverless applications](https://aws.github.io/chalice/index.html)
