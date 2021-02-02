@@ -503,6 +503,12 @@ To https://git-codecommit.us-east-1.amazonaws.com/v1/repos/aws-chalice-test
 
 ```
 ## Verification
+The best way to verify the pipeline is working as expected is to view the pipeline in the console and wait until the stages have completed and all the stages are green.
+
+![alt text](https://github.com/stahlmatias/aws-chalice/blob/main/img/CodePipeline.png?raw=true)
+
+![alt text](https://github.com/stahlmatias/aws-chalice/blob/main/img/CodePipelineII.png?raw=true)
+
 
 # Resources
 [AWS Chalice A framework for writing serverless applications](https://aws.github.io/chalice/index.html)
