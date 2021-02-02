@@ -18,6 +18,10 @@ This is a simple workshop step by step and the intention is to reproduce the fol
 
 ![alt text](https://github.com/stahlmatias/aws-chalice/blob/main/img/Secure-API-Gateway.png?raw=true)
 
+## Simple (uncomplete) ToDo App
+![alt text](https://github.com/stahlmatias/aws-chalice/blob/main/img/AWS-Chalice.png?raw=true)
+
+
 1. Deploy todo-table
 ```
 $ cat dynamodb_cf.yaml 
