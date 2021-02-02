@@ -1,4 +1,11 @@
 # aws-chalice
+
+Chalice's API for writing serverless application uses a familiar decorator-based syntax used in frameworks such as Flask, bottle, and FastAPI.  Chalice automatically determines how to provision the necessary resources for your application. Chalice lets you quickly create and deploy python applications that use AWS Lambda. Using the Chalice CLI, you can have a REST API deployed to Amazon API Gateway and AWS Lambda in minutes. 
+
+This workshop will walk through creating a serverless web API to update, get a Todo’s, managing Todo’s in a database, adding authorization with JWT, and creating a full CI/CD pipeline for the application. 
+
+AWS services covered include AWS Lambda, Amazon API Gateway, Amazon DynamoDB, AWS CodeBuild, and AWS CodePipeline.
+
 In order to get started using AWS Chalice we need to install/configure the following requirements:
 * Python 3.7
 * Virtualenv
